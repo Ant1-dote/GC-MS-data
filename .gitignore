@@ -1,0 +1,9 @@
+data/
+output/stage1_*.parquet
+output/stage2_*.parquet
+output/spectral_matrix.npy
+output/shap_*.npy
+output/shap_*.parquet
+__pycache__/
+.venv/
+
