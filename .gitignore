@@ -7,3 +7,5 @@ output/shap_*.parquet
 __pycache__/
 .venv/
 
+
+output/reference_spectra.npy
