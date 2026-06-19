@@ -60,10 +60,18 @@ for ep in range(20):
         opt.zero_grad(); loss.backward(); opt.step() 
     if ep%5==0: 
         with torch.no_grad(): 
-            p = model(X_te_t).cpu().numpy() 
+            # batch inference to avoid OOM
+            p_parts = []
+            for i in range(0, len(X_te_t), bs):
+                p_parts.append(model(X_te_t[i:i+bs]).cpu())
+            p = torch.cat(p_parts).numpy()
             print(f"  Ep {ep}: MAE={mean_absolute_error(y_te, p):.3f}") 
  
 with torch.no_grad(): 
-    p = model(X_te_t).cpu().numpy() 
+    # batch inference to avoid OOM
+    p_parts = []
+    for i in range(0, len(X_te_t), bs):
+        p_parts.append(model(X_te_t[i:i+bs]).cpu())
+    p = torch.cat(p_parts).numpy() 
 print(f"CNN: MAE={mean_absolute_error(y_te, p):.3f}, R2={r2_score(y_te, p):.4f}") 
 print(f"Time: {time.time()-t0:.1f}s")

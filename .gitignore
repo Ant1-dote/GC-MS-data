@@ -9,3 +9,4 @@ __pycache__/
 
 
 output/reference_spectra.npy
+output/stats.txt 
