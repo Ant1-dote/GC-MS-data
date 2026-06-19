@@ -29,4 +29,26 @@ with col1:
             ax.set_ylabel("Intensity")
             st.pyplot(fig)
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f"Error: {e}") 
+st.markdown("---") 
+st.header("Spectral Similarity Search") 
+st.markdown("Find similar compounds from 284k database") 
+ 
+with st.expander("Search", expanded=True): 
+    q_mz = st.text_input("Query m/z", "15,26,27,39,51,52,77", key="q_mz") 
+    q_int = st.text_input("Query intensity", "120,340,260,1110,400,320,999", key="q_int") 
+    top_k = st.slider("Top K", 5, 50, 10) 
+    if st.button("Search", type="primary"): 
+        from app.search_module import load_data, bin_vec, search 
+        with st.spinner("Loading database..."): 
+            spec, meta = load_data() 
+        with st.spinner("Searching..."): 
+            qv = bin_vec(q_mz, q_int) 
+            results = search(qv, spec, meta, top_k) 
+        st.dataframe(results, use_container_width=True) 
+        mz_arr = np.array([float(x) for x in q_mz.split(",") if x.strip()]) 
+        int_arr = np.array([float(x) for x in q_int.split(",") if x.strip()]) 
+        fig, ax = plt.subplots(figsize=(10, 2.5)) 
+        ax.bar(mz_arr, int_arr, width=0.5, color="#FF9800") 
+        ax.set_xlabel("m/z"); ax.set_ylabel("Intensity") 
+        st.pyplot(fig)
