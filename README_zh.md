@@ -233,5 +233,12 @@ uv run python scripts/predict_dbe.py "15,26,27,39,51,52,77" "120,340,260,1110,40
 **Code Generation Notes:**  
 - 5-fold CV (R2=0.783), LOCO, and m/z+NL model (R2=0.811) results come from scripts/analysis_cv.py  
 - stage4_compare.py uses 3-fold CV (fixed from 2-fold)  
-- predict_dbe.py now uses lgb_dbe_model.txt (m/z only, 806 features) instead of lgb_combined_mz_nl.txt  
-- New scripts: shap_plots.py, experiment_binning.py, experiment_cnn.py, app/app.py (Streamlit) 
+- predict_dbe.py now uses ensemble (LGBM m/z+NL ×0.7 + CNN ×0.3), falls back to LGBM-only  
+- New scripts: shap_plots.py, experiment_binning.py, experiment_cnn.py, experiment_ensemble.py, app/app.py (Streamlit + similarity search) 
+ 
+**Updated Code Notes:** 
+- Ensemble: LGBM m/z+NL x0.7 + CNN x0.3, best R2=0.833 (scripts/experiment_ensemble.py) 
+- predict_dbe.py now uses ensemble (LGBM+CNN); falls back to LGBM if CNN model not found 
+- predict_dbe.py builds m/z (800) + NL (400) + feat (6) = 1206 features for LGBM m/z+NL model 
+- app/app.py has two features: DBE predict + spectral similarity search (284k database, cosine similarity) 
+- search_module.py: cached spectral matrix loading, bin_vec(), search() functions
