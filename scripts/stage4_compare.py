@@ -49,9 +49,9 @@ X_tune = X_tr[ti]; y_tune = y_tr[ti]
 print('  Tuning subset: %d samples' % n_tune)
 param_dist = {'n_estimators':[200,300,500], 'max_depth':[6,8,10,12], 'learning_rate':[0.01,0.03,0.05], 'subsample':[0.6,0.8], 'colsample_bytree':[0.6,0.8], 'min_child_weight':[1,3,5], 'gamma':[0,0.1], 'reg_alpha':[0,0.1], 'reg_lambda':[0,0.1]}
 n_iter = 15
-print('  RandomizedSearchCV (%d iters, 2-fold CV)...' % n_iter)
+print('  RandomizedSearchCV (%d iters, 3-fold CV)...' % n_iter)
 xgb_base = xgb.XGBRegressor(random_state=42, verbosity=0, n_jobs=-1)
-rs = RandomizedSearchCV(xgb_base, param_dist, n_iter=n_iter, scoring='neg_mean_absolute_error', cv=2, random_state=42, verbose=0, n_jobs=-1)
+rs = RandomizedSearchCV(xgb_base, param_dist, n_iter=n_iter, scoring='neg_mean_absolute_error', cv=3, random_state=42, verbose=0, n_jobs=-1)
 rs.fit(X_tune, y_tune)
 print('  Best params: %s' % str(rs.best_params_))
 print('  Best CV MAE: %.3f' % -rs.best_score_)

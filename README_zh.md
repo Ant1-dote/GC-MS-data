@@ -228,4 +228,10 @@ uv run python scripts/predict_dbe.py "15,26,27,39,51,52,77" "120,340,260,1110,40
 
 - Ke et al. LightGBM. NIPS 2017.
 - Lundberg & Lee. SHAP. NIPS 2017.
-- McLafferty. Interpretation of Mass Spectra. 1993.
+- McLafferty. Interpretation of Mass Spectra. 1993.  
+---  
+**Code Generation Notes:**  
+- 5-fold CV (R2=0.783), LOCO, and m/z+NL model (R2=0.811) results come from scripts/analysis_cv.py  
+- stage4_compare.py uses 3-fold CV (fixed from 2-fold)  
+- predict_dbe.py now uses lgb_dbe_model.txt (m/z only, 806 features) instead of lgb_combined_mz_nl.txt  
+- New scripts: shap_plots.py, experiment_binning.py, experiment_cnn.py, app/app.py (Streamlit) 
